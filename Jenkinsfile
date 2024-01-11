@@ -32,13 +32,13 @@ pipeline {
             steps {
                 script {
                     // Use the PRISMA_TOKEN environment variable for authentication
-                    sh '''
-                        curl -k \
-                        -H "Authorization: Bearer ${env.PRISMA_TOKEN}" \
-                        -H 'Content-Type: text/csv' \
-                        -X GET -o "defender.tar" \
+                    sh """
+                        curl -k \\
+                        -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
+                        -H 'Content-Type: text/csv' \\
+                        -X GET -o 'defender.tar' \\
                         https://api0.prismacloud.io/api/v1/defenders/download?latest=true
-                    '''
+                    """
                 }
             }
         }
