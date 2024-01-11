@@ -37,16 +37,16 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X GET \\
-                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/download?latest=true
+                       https://app0.cloud.twistlock.com/panw-app0-310/api/v1/images/twistlock_defender.tar.gz 
                     """
                 }
             }
         }
 
-        // stage('Create Artifact') {
-        //     steps {
-        //         archiveArtifacts artifacts: 'defender.tar', onlyIfSuccessful: true
-        //     }
-        // }
+        stage('Create Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'twistlock_defender.tar.gz', onlyIfSuccessful: true
+            }
+        }
     }
 }
