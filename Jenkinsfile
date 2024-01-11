@@ -43,10 +43,10 @@ pipeline {
             }
         }
 
-        stage('Create Artifact') {
-            steps {
-                archiveArtifacts artifacts: 'defender.tar', onlyIfSuccessful: true
-            }
-        }
+        // stage('Create Artifact') {
+        //     steps {
+        //         archiveArtifacts artifacts: 'defender.tar', onlyIfSuccessful: true
+        //     }
+        // }
     }
 }
