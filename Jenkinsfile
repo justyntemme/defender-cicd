@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        PC_IDENTITY = credentials('pc-service-account_USR')
-        PC_SECRET = credentials('pc-service-account_PSW')
-        PC_URL = 'https://api0.prismacloud.io'
-    }
-
     stages {
         stage('Prisma Cloud Login') {
             steps {
