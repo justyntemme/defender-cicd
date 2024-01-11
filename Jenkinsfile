@@ -10,7 +10,7 @@ pipeline {
                     script {
                         // Perform login and capture the response
                         def loginResponse = sh(script: '''
-                            curl -s -X POST "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/login" \
+                            curl -s -X POST "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/authenticate" \
                             -H 'accept: application/json; charset=UTF-8' \
                             -H 'content-type: application/json' \
                             -d '{"username": "'"$PC_IDENTITY"'", "password": "'"$PC_SECRET"'"}'
