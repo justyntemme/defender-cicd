@@ -30,20 +30,22 @@ pipeline {
         }
         stage('Query Prisma Cloud API for Single Container Defender') {
             steps {
-                script {
-                    // Define API credentials and endpoint
-                    def apiEndpoint = 'https://<prisma_cloud_api_endpoint>/defenders/docker-image-name'
-                    def authToken = 'YOUR_AUTH_TOKEN' // Securely store and retrieve this
+                    script {
+                        // Replace placeholders with actual values
+                        sh '''
+                            curl -k \
+                            -u "your_username:your_password" \
+                            -H 'Content-Type: text/csv' \
+                            -X GET -o "defender.tar" \
+                            https://api0.prismacloud.io/api/v32.01/defenders/download
+                        '''
+                    }
+            }
+        }
 
-                    // API call to get Docker Image Name for Defender
-                    def defenderDockerImageName = sh(script: """
-                        curl -X GET "$apiEndpoint" \
-                        -H "Authorization: Bearer $authToken"
-                    """, returnStdout: true).trim()
-
-                    // Process the response
-                    println("Defender Docker Image Name: ${defenderDockerImageName}")
-                }
+        stage('Create Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'defender.tar', onlyIfSuccessful: true
             }
         }
     }
