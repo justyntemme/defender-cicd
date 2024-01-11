@@ -7,7 +7,7 @@ pipeline {
         booleanParam(name: 'collectPodLabels', defaultValue: true, description: 'Collect pod related labels.')
         string(name: 'consoleAddr', description: 'Console address for defender communication.')
         choice(name: 'containerRuntime',defaultValue: 'docker', choices: ['docker', 'containerd', 'crio'], description: 'Container runtime type.')
-        string(name: 'cpuLimit', defaultValue: 0, description: 'CPU limit for the defender daemonset.')
+        string(name: 'cpuLimit', description: 'CPU limit for the defender daemonset.')
         string(name: 'credentialID', description: 'Name of the credential used.')
         string(name: 'dockerSocketPath', description: 'Path of the docker socket file.')
         booleanParam(name: 'gkeAutopilot', defaultValue: true, description: 'Deployment for GKE Autopilot.')
