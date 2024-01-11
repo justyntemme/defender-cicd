@@ -73,11 +73,7 @@ pipeline {
         stage('Create Artifacts') {
             steps {
                 archiveArtifacts artifacts: 'twistlock_defender.tar.gz', onlyIfSuccessful: true
-            }
-            steps {
                 archiveArtifacts artifacts: 'twistlock_daemonset_defender_helm.tar.gz', onlyIfSuccessful: true
-            }
-            steps {
                 archiveArtifacts artifacts: 'twistlock_daemonset_defender.yaml', onlyIfSuccessful: true
             }
         }
