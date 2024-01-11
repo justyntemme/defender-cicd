@@ -66,7 +66,7 @@ pipeline {
                         curl -k \\
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
-                        -X GET -o 'twistlock_defender.tar.gz' \\
+                        -X POST -o 'twistlock_defender.tar.gz' \\
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/images/twistlock_defender.tar.gz 
                     """
                 }
@@ -80,7 +80,14 @@ pipeline {
                         curl -k \\
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
-                        -X GET -o 'twistlock_daemonset_defender_helm.tar.gz' \\
+                        -X POST -o 'twistlock_daemonset_defender_helm.tar.gz' \\
+                        -d \
+                            '{
+                            "orchestration": "container",
+                            "consoleAddr": "servo-vmware71",
+                            "containerRuntime": "docker",
+                            "namespace": "twistlock"
+                            }' \
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/helm/twistlock-defender-helm.tar.gz 
                     """
                 }
@@ -95,6 +102,13 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X GET -o 'twistlock_daemonset_defender.yaml' \\
+                        -d \
+                        '{
+                        "orchestration": "container",
+                        "consoleAddr": "servo-vmware71",
+                        "containerRuntime": "docker",
+                        "namespace": "twistlock"
+                        }' \
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/daemonset.yaml 
                     """
                 }
