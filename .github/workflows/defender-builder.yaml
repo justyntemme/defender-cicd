@@ -1,0 +1,38 @@
+name: Prisma Cloud Workflow
+
+on: [push, pull_request]
+
+jobs:
+  prisma-cloud-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Prisma Cloud Login
+      run: |
+        loginResponse=$(curl -s -X POST "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/authenticate" \
+        -H 'accept: application/json; charset=UTF-8' \
+        -H 'content-type: application/json' \
+        -d '{"username": "${{ secrets.PC_IDENTITY }}", "password": "${{ secrets.PC_SECRET }}"}')
+        PRISMA_TOKEN=$(echo $loginResponse | jq -r '.token')
+        if [ -z "$PRISMA_TOKEN" ]; then
+          echo "Failed to obtain PRISMA token"
+          exit 1
+        fi
+        echo "PRISMA_TOKEN=$PRISMA_TOKEN" >> $GITHUB_ENV
+
+    - name: Query Prisma Cloud API for Single Container Defender
+      run: |
+        curl -k \
+        -H "Authorization: Bearer ${{ env.PRISMA_TOKEN }}" \
+        -H 'Content-Type: text/csv' \
+        -X GET -o twistlock_defender.tar.gz \
+        "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/images/twistlock_defender.tar.gz"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: twistlock-defender
+        path: twistlock_defender.tar.gz
