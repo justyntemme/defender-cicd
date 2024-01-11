@@ -36,7 +36,7 @@ pipeline {
                         curl -k \\
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
-                        -X GET \\
+                        -X GET -o 'twistlock_defender.tar.gz' \\
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/images/twistlock_defender.tar.gz 
                     """
                 }
