@@ -1,0 +1,38 @@
+stages:
+  - login
+  - download
+  - artifact
+
+prisma_cloud_login:
+  stage: login
+  script:
+    - >
+      loginResponse=$(curl -s -X POST "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/authenticate" \
+      -H 'accept: application/json; charset=UTF-8' \
+      -H 'content-type: application/json' \
+      -d '{"username": "$PC_IDENTITY", "password": "$PC_SECRET"}')
+      PRISMA_TOKEN=$(echo $loginResponse | jq -r '.token')
+      if [ -z "$PRISMA_TOKEN" ]; then
+        echo "Failed to obtain PRISMA token"
+        exit 1
+      fi
+      echo "PRISMA_TOKEN=$PRISMA_TOKEN" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+query_prisma_cloud_api:
+  stage: download
+  script:
+    - 'curl -k -H "Authorization: Bearer $PRISMA_TOKEN" -H "Content-Type: text/csv" -X GET -o twistlock_defender.tar.gz "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/images/twistlock_defender.tar.gz"'
+  dependencies:
+    - prisma_cloud_login
+
+create_artifact:
+  stage: artifact
+  script:
+    - echo "Creating artifact"
+  artifacts:
+    paths:
+      - twistlock_defender.tar.gz
+
