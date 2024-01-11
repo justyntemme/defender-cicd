@@ -30,16 +30,16 @@ pipeline {
         }
         stage('Query Prisma Cloud API for Single Container Defender') {
             steps {
-                    script {
-                        // Replace placeholders with actual values
-                        sh '''
-                            curl -k \
-                            -u "your_username:your_password" \
-                            -H 'Content-Type: text/csv' \
-                            -X GET -o "defender.tar" \
-                            https://api0.prismacloud.io/api/v32.01/defenders/download
-                        '''
-                    }
+                script {
+                    // Use the PRISMA_TOKEN environment variable for authentication
+                    sh '''
+                        curl -k \
+                        -H "Authorization: Bearer ${env.PRISMA_TOKEN}" \
+                        -H 'Content-Type: text/csv' \
+                        -X GET -o "defender.tar" \
+                        https://api0.prismacloud.io/api/v1/defenders/download?latest=true
+                    '''
+                }
             }
         }
 
