@@ -10,7 +10,7 @@ pipeline {
                     script {
                         // Perform login and capture the response
                         def loginResponse = sh(script: '''
-                            curl -s -X POST "https://api0.prismacloud.io/login" \
+                            curl -s -X POST "https://app0.cloud.twistlock.com/panw-app0-310/api/v1/login" \
                             -H 'accept: application/json; charset=UTF-8' \
                             -H 'content-type: application/json' \
                             -d '{"username": "'"$PC_IDENTITY"'", "password": "'"$PC_SECRET"'"}'
@@ -37,7 +37,7 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X GET -o 'defender.tar' \\
-                        https://api0.prismacloud.io/api/v1/defenders/download?latest=true
+                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/download?latest=true
                     """
                 }
             }
