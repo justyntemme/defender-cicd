@@ -9,12 +9,12 @@ pipeline {
                 ]) {
                     script {
                         // Perform login and capture the response
-                        def loginResponse = sh(script: """
+                        def loginResponse = sh(script: '''
                             curl -s -X POST "https://api0.prismacloud.io/login" \
-                            -H "accept: application/json; charset=UTF-8" \
-                            -H "content-type: application/json" \
-                            -d '{"username": "${PC_IDENTITY}", "password": "${PC_SECRET}"}'
-                        """, returnStdout: true).trim()
+                            -H 'accept: application/json; charset=UTF-8' \
+                            -H 'content-type: application/json' \
+                            -d '{"username": "'"$PC_IDENTITY"'", "password": "'"$PC_SECRET"'"}'
+                        ''', returnStdout: true).trim()
 
                         // Parse the response and extract the token
                         def parsedResponse = readJSON text: loginResponse
