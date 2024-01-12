@@ -1,4 +1,7 @@
 pipeline {
+    tools {
+        jfrog 'jfrog-cli'
+    }
     agent any
     parameters {
         string(name: 'annotations', description: 'Key-value pairs of annotations metadata.')
