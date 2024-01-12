@@ -17,7 +17,7 @@ pipeline {
         string(name: 'image', description: 'Full daemonset image name.')
         booleanParam(name: 'istio', defaultValue: false, description: 'Monitor Istio.')
         string(name: 'memoryLimit', description: 'Memory limit for the defender daemonset.')
-        string(name: 'namespace', description: 'Target daemonset namespaces.')
+        string(name: 'namespace', defaultValue: "default", description: 'Target daemonset namespaces.')
         string(name: 'nodeSelector', description: 'Key/value node selector.')
         string(name: 'orchestration', defaultValue: 'container', description: 'Orchestration type.')
         string(name: 'priorityClassName', description: 'Priority class name for the defender.')
