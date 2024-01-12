@@ -31,7 +31,49 @@ pipeline {
         string(name: 'tolerations', defaultValue: '', description: 'JSON string representing a list of tolerations for the defender daemonset.')
         booleanParam(name: 'uniqueHostname', defaultValue: true, description: 'Assign unique hostnames.')
     }
+    environment {
+        JSON_PAYLOAD = ''
+    }
     stages {
+        stage('Process Parameters') {
+            steps {
+                script {
+                    def paramsMap = [:]
+
+                    paramsMap.annotations = params.annotations ?: ''
+                    paramsMap.bottlerocket = params.bottlerocket
+                    paramsMap.cluster = params.cluster ?: ''
+                    paramsMap.collectPodLabels = params.collectPodLabels
+                    paramsMap.consoleAddr = params.consoleAddr ?: ''
+                    paramsMap.containerRuntime = params.containerRuntime ?: ''
+                    paramsMap.cpuLimit = params.cpuLimit ?: ''
+                    paramsMap.credentialID = params.credentialID ?: ''
+                    paramsMap.dockerSocketPath = params.dockerSocketPath ?: ''
+                    paramsMap.gkeAutopilot = params.gkeAutopilot
+                    paramsMap.image = params.image ?: ''
+                    paramsMap.istio = params.istio
+                    paramsMap.memoryLimit = params.memoryLimit ?: ''
+                    paramsMap.namespace = params.namespace ?: ''
+                    paramsMap.nodeSelector = params.nodeSelector ?: ''
+                    paramsMap.orchestration = params.orchestration ?: ''
+                    paramsMap.priorityClassName = params.priorityClassName ?: ''
+                    paramsMap.privileged = params.privileged
+                    paramsMap.projectID = params.projectID ?: ''
+                    paramsMap.proxy = params.proxy ?: ''
+                    paramsMap.region = params.region ?: ''
+                    paramsMap.roleARN = params.roleARN ?: ''
+                    paramsMap.secretsname = params.secretsname ?: ''
+                    paramsMap.selinux = params.selinux
+                    paramsMap.serviceaccounts = params.serviceaccounts
+                    paramsMap.talos = params.talos
+                    paramsMap.tolerations = params.tolerations ?: ''
+                    paramsMap.uniqueHostname = params.uniqueHostname
+
+                    JSON_PAYLOAD = new groovy.json.JsonBuilder(paramsMap).toPrettyString()
+                    env.JSON_PAYLOAD = JSON_PAYLOAD
+                }
+            }
+        }
         stage('Prisma Cloud Login') {
             steps {
                 withCredentials([
@@ -81,13 +123,7 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X POST -o 'twistlock_daemonset_defender_helm.tar.gz' \\
-                        -d \
-                            '{
-                            "orchestration": "container",
-                            "consoleAddr": "servo-vmware71",
-                            "containerRuntime": "docker",
-                            "namespace": "twistlock"
-                            }' \
+                        -d '\${env.JSON_PAYLOAD}' \\
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/helm/twistlock-defender-helm.tar.gz 
                     """
                 }
@@ -102,13 +138,7 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X POST -o 'twistlock_daemonset_defender.yaml' \\
-                        -d \
-                        '{
-                        "orchestration": "container",
-                        "consoleAddr": "servo-vmware71",
-                        "containerRuntime": "docker",
-                        "namespace": "twistlock"
-                        }' \
+                        -d '\${env.JSON_PAYLOAD}' \\
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/daemonset.yaml 
                     """
                 }
