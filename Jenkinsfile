@@ -1,6 +1,6 @@
 pipeline {
     tools {
-        jfrog 'jfrog-cli'
+        jfrog 'jf'
     }
     agent any
     parameters {
