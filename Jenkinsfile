@@ -125,26 +125,18 @@ pipeline {
             }
         }
         stage('Create Artifacts') {
-            steps{ 
+            steps {
+                archiveArtifacts artifacts: 'twistlock_defender.tar.gz', onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'twistlock_daemonset_defender_helm.tar.gz', onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'twistlock_daemonset_defender.yaml', onlyIfSuccessful: true
+            }
+        }
+        stage('Upload to Artifactory with JFrog CLI') {
+            steps {
                 script {
-                    def artifactoryServer = Artifactory.server('jfrog-1')
-                    def uploadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "twistlock_defender.tar.gz",
-                                "target": "defenders/"
-                            },
-                            {
-                                "pattern": "twistlock_daemonset_defender_helm.tar.gz",
-                                "target": "defenders/"
-                            },
-                            {
-                                "pattern": "twistlock_daemonset_defender.yaml",
-                                "target": "defenders/"
-                            }
-                        ]
-                    }"""
-                    artifactoryServer.upload spec: uploadSpec
+                    sh 'jfrog rt u "twistlock_defender.tar.gz" "defenders/"'
+                    sh 'jfrog rt u "twistlock_daemonset_defender_helm.tar.gz" "defenders/"'
+                    sh 'jfrog rt u "twistlock_daemonset_defender.yaml" "defenders/"'
                 }
             }
         }
