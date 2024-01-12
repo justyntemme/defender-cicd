@@ -123,7 +123,7 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X POST -o 'twistlock_daemonset_defender_helm.tar.gz' \\
-                        -d '\${env.JSON_PAYLOAD}' \\
+                        -d '\$${JSON_PAYLOAD}' \\
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/helm/twistlock-defender-helm.tar.gz 
                     """
                 }
@@ -138,7 +138,7 @@ pipeline {
                         -H 'Authorization: Bearer ${PRISMA_TOKEN}' \\
                         -H 'Content-Type: text/csv' \\
                         -X POST -o 'twistlock_daemonset_defender.yaml' \\
-                        -d '\${env.JSON_PAYLOAD}' \\
+                        -d '\$${JSON_PAYLOAD}' \\
                        https://app0.cloud.twistlock.com/panw-app0-310/api/v1/defenders/daemonset.yaml 
                     """
                 }
