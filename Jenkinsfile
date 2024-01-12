@@ -35,6 +35,11 @@ pipeline {
         booleanParam(name: 'uniqueHostname', defaultValue: true, description: 'Assign unique hostnames.')
     }
     environment {
+        GIT_BRANCH = ""
+        GIT_COMMIT = ""
+        GIT_PREVIOUS_COMMIT = ""
+        GIT_PREVIOUS_SUCCESSFUL_COMMIT = ""
+        GIT_URL = ""
         JSON_PAYLOAD = ''
     }
     stages {
