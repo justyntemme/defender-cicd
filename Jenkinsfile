@@ -136,13 +136,13 @@ pipeline {
         }
         stage ('Testing') {
             steps {
-		   #Show the version of JFrog CLI used 
+		   //Show the version of JFrog CLI used 
                 jf '-v' 
-		   #Show the configuration used to connect to JFrog Platform 
+		   //Show the configuration used to connect to JFrog Platform 
                 jf 'c show'
-		   #in this command we are pinging the artifactory to see if it is alive 
+		   //in this command we are pinging the artifactory to see if it is alive 
                 jf 'rt ping'
-		   #In this command we are creating a new file 
+		   //In this command we are creating a new file 
                 sh 'touch test-file'
             }
         }
