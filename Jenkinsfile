@@ -71,6 +71,7 @@ pipeline {
 
                     JSON_PAYLOAD = new groovy.json.JsonBuilder(paramsMap).toPrettyString()
                     env.JSON_PAYLOAD = JSON_PAYLOAD
+                    echo "JSON Payload: ${env.JSON_PAYLOAD}"
                 }
             }
         }
