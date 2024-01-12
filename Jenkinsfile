@@ -125,25 +125,27 @@ pipeline {
             }
         }
         stage('Create Artifacts') {
-            script {
-                def artifactoryServer = Artifactory.server('jfrog-1')
-                def uploadSpec = """{
-                    "files": [
-                        {
-                            "pattern": "twistlock_defender.tar.gz",
-                            "target": "defenders/"
-                        },
-                        {
-                            "pattern": "twistlock_daemonset_defender_helm.tar.gz",
-                            "target": "defenders/"
-                        },
-                        {
-                            "pattern": "twistlock_daemonset_defender.yaml",
-                            "target": "defenders/"
-                        }
-                    ]
-                }"""
-                artifactoryServer.upload spec: uploadSpec
+            steps{ 
+                script {
+                    def artifactoryServer = Artifactory.server('jfrog-1')
+                    def uploadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "twistlock_defender.tar.gz",
+                                "target": "defenders/"
+                            },
+                            {
+                                "pattern": "twistlock_daemonset_defender_helm.tar.gz",
+                                "target": "defenders/"
+                            },
+                            {
+                                "pattern": "twistlock_daemonset_defender.yaml",
+                                "target": "defenders/"
+                            }
+                        ]
+                    }"""
+                    artifactoryServer.upload spec: uploadSpec
+                }
             }
         }
     }
