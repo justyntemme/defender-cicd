@@ -134,19 +134,7 @@ pipeline {
                 archiveArtifacts artifacts: 'twistlock_daemonset_defender.yaml', onlyIfSuccessful: true
             }
         }
-        stage ('Testing') {
-            steps {
-		   //Show the version of JFrog CLI used 
-                jf '-v' 
-		   //Show the configuration used to connect to JFrog Platform 
-                jf 'c show'
-		   //in this command we are pinging the artifactory to see if it is alive 
-                jf 'rt ping'
-		   //In this command we are creating a new file 
-                sh 'touch test-file'
-            }
-        }
-
+        
         stage('Upload to Artifactory with JFrog CLI') {
             steps {
                 script {
