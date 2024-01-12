@@ -137,9 +137,9 @@ pipeline {
         stage('Upload to Artifactory with JFrog CLI') {
             steps {
                 script {
-                    sh 'jfrog rt u "twistlock_defender.tar.gz" "defenders/"'
-                    sh 'jfrog rt u "twistlock_daemonset_defender_helm.tar.gz" "defenders/"'
-                    sh 'jfrog rt u "twistlock_daemonset_defender.yaml" "defenders/"'
+                    sh 'jf rt u "twistlock_defender.tar.gz" "defenders/"'
+                    sh 'jf rt u "twistlock_daemonset_defender_helm.tar.gz" "defenders/"'
+                    sh 'jf rt u "twistlock_daemonset_defender.yaml" "defenders/"'
                 }
             }
         }
