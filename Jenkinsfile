@@ -148,6 +148,8 @@ pipeline {
                     script {
                         
                         sh 'curl -uadmin:$jfrog_token -T twistlock_defender.tar.gz "http://ec2-3-136-20-31.us-east-2.compute.amazonaws.com/artifactory/defenders/twistlock_defender.tar.gz"'
+                        sh 'curl -uadmin:$jfrog_token -T twistlock_daemonset_defender_helm.tar.gz "http://ec2-3-136-20-31.us-east-2.compute.amazonaws.com/artifactory/defenders/twistlock_daemonset_defender_helm.tar.gz"'
+                        sh 'curl -uadmin:$jfrog_token -T twistlock_daemonset_defender.yaml "http://ec2-3-136-20-31.us-east-2.compute.amazonaws.com/artifactory/defenders/twistlock_daemonset_defender.yaml"'
                         // jf 'rt u twistlock_defender.tar.gz defenders/'
                         // jf 'rt u twistlock_daemonset_defender_helm.tar.gz defenders/'
                         // jf 'rt u twistlock_daemonset_defender.yaml defenders/'
