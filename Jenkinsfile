@@ -37,42 +37,21 @@ pipeline {
     stages {
         stage('Process Parameters') {
             steps {
-                script {
-                    def paramsMap = [:]
+               script {
+                def paramsMap = [:]
 
-                    paramsMap.annotations = params.annotations ?: ''
-                    paramsMap.bottlerocket = params.bottlerocket
-                    paramsMap.cluster = params.cluster ?: ''
-                    paramsMap.collectPodLabels = params.collectPodLabels
-                    paramsMap.consoleAddr = params.consoleAddr ?: ''
-                    paramsMap.containerRuntime = params.containerRuntime ?: ''
-                    paramsMap.cpuLimit = params.cpuLimit ?: ''
-                    paramsMap.credentialID = params.credentialID ?: ''
-                    paramsMap.dockerSocketPath = params.dockerSocketPath ?: ''
-                    paramsMap.gkeAutopilot = params.gkeAutopilot
-                    paramsMap.image = params.image ?: ''
-                    paramsMap.istio = params.istio
-                    paramsMap.memoryLimit = params.memoryLimit ?: ''
-                    paramsMap.namespace = params.namespace ?: ''
-                    paramsMap.nodeSelector = params.nodeSelector ?: ''
-                    paramsMap.orchestration = params.orchestration ?: ''
-                    paramsMap.priorityClassName = params.priorityClassName ?: ''
-                    paramsMap.privileged = params.privileged
-                    paramsMap.projectID = params.projectID ?: ''
-                    paramsMap.proxy = params.proxy ?: ''
-                    paramsMap.region = params.region ?: ''
-                    paramsMap.roleARN = params.roleARN ?: ''
-                    paramsMap.secretsname = params.secretsname ?: ''
-                    paramsMap.selinux = params.selinux
-                    paramsMap.serviceaccounts = params.serviceaccounts
-                    paramsMap.talos = params.talos
-                    paramsMap.tolerations = params.tolerations ?: ''
-                    paramsMap.uniqueHostname = params.uniqueHostname
-
-                    JSON_PAYLOAD = new groovy.json.JsonBuilder(paramsMap).toPrettyString()
-                    env.JSON_PAYLOAD = JSON_PAYLOAD
-                    
+                // Iterate over all build parameters
+                def buildParams = currentBuild.rawBuild.getAction(hudson.model.ParametersAction)?.parameters
+                buildParams.each {
+                    if (it.value != null && it.value != '') {
+                        // Add parameter to map if it's not null or empty
+                        paramsMap[it.name] = it.value
+                    }
                 }
+
+                JSON_PAYLOAD = new groovy.json.JsonBuilder(paramsMap).toPrettyString()
+                env.JSON_PAYLOAD = JSON_PAYLOAD
+            } 
             }
         }
         stage('Prisma Cloud Login') {
