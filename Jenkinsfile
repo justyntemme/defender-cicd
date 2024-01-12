@@ -142,10 +142,16 @@ pipeline {
         
         stage('Upload to Artifactory with JFrog CLI') {
             steps {
-                script {
-                    jf 'rt u twistlock_defender.tar.gz defenders/'
-                    jf 'rt u twistlock_daemonset_defender_helm.tar.gz defenders/'
-                    jf 'rt u twistlock_daemonset_defender.yaml defenders/'
+                withCredentials([
+                    usernamePassword(credentialsId: 'jfrog-token', usernameVariable: 'jfrog_username', passwordVariable: 'jfrog_token')
+                ]) {
+                    script {
+                        
+                        sh 'curl -uadmin:$jfrog_token -T twistlock_defender.tar.gz "http://ec2-3-136-20-31.us-east-2.compute.amazonaws.com/artifactory/defenders/twistlock_defender.tar.gz"'
+                        // jf 'rt u twistlock_defender.tar.gz defenders/'
+                        // jf 'rt u twistlock_daemonset_defender_helm.tar.gz defenders/'
+                        // jf 'rt u twistlock_daemonset_defender.yaml defenders/'
+                    }
                 }
             }
         }
